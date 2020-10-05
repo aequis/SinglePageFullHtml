@@ -78,7 +78,7 @@ public class SinglePageFullHtml {
                     py_script,
                     "-o", curr_dir,
                     "-u", page_url,
-                    "-f", file_stem
+                    "-f", file_stem + ".html"
             };
 
             Utils.execSystemCommand(py_cmd);
