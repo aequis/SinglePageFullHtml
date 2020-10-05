@@ -4,6 +4,8 @@ import org.apache.tika.utils.SystemUtils;
 
 import java.io.*;
 
+import java.util.Arrays;
+
 public class SinglePageFullHtml {
     public static void main(String[] args) throws Exception {
         if (args.length < 1) {
@@ -48,8 +50,8 @@ public class SinglePageFullHtml {
 
         System.out.println("py_script: " + py_script);
 
-        String in_file = curr_dir + File.separatorChar + file_stem + ".html";
-        String out_file = curr_dir + File.separatorChar + "F" + file_stem + ".html";
+        String in_file = curr_dir + File.separatorChar + "index.html";
+        String out_file = curr_dir + File.separatorChar + "F" + "index.html";
 
         File fin = new File(in_file);
 
@@ -59,29 +61,36 @@ public class SinglePageFullHtml {
                 fin.delete();
             }
 
-            String pythonExecutable = "";
+            String wgetExecutable = "";
             if (SystemUtils.IS_OS_WINDOWS) {
-                // TODO please verify, for me this works
-                pythonExecutable = "python";
+                wgetExecutable = "wget.exe";
             } else if (SystemUtils.IS_OS_LINUX) {
-                pythonExecutable = "/usr/bin/python3";
-            } else if (SystemUtils.IS_OS_MAC_OSX) {
-                // TODO please verify
-                pythonExecutable = "/usr/bin/python";
+                wgetExecutable = "wget";
             } else {
-                pythonExecutable = "python"; // some fallback that may or may not work
+                wgetExecutable = "wget"; // some fallback that may or may not work
             }
 
             // e.g., /usr/bin/python GetFullWebPage.py  -o /home/bgu/Downloads/ -u https://www.wonderslist.com/10-most-amazing-places-on-earth
-            String[] py_cmd = new String[]{
-                    pythonExecutable,
-                    py_script,
-                    "-o", curr_dir,
-                    "-u", page_url,
-                    "-f", file_stem + ".html"
+            String[] wget_cmd = new String[]{
+                wgetExecutable,
+                "-e robots=off",
+                "-U \'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.8.1.6) Gecko/20070802 SeaMonkey/1.1.4\'",
+                "--page-requisites",
+                "--adjust-extension",
+                "--span-hosts",
+                "--convert-links",
+                "--restrict-file-names=windows",
+                "--directory-prefix=\"" + curr_dir + "\"",
+                "--no-parent",
+                "--no-host-directories",
+                "--no-directories",
+                "--timestamping",
+                "--quiet",
+                "\"" + page_url + "\""
             };
+            System.out.println(Arrays.toString(wget_cmd));
 
-            Utils.execSystemCommand(py_cmd);
+            Utils.execSystemCommand(wget_cmd);
         } // else use previously saved html download
 
 
@@ -100,7 +109,6 @@ public class SinglePageFullHtml {
 
             long bytes2 = fout.length();
 
-            System.out.println("\nresult fat html saved to: " + out_file);
             System.out.println("\nresult merged file size: " + bytes2);
         } catch (Exception ex) {
             ex.printStackTrace();
