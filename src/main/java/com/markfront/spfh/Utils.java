@@ -15,7 +15,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Base64;
 import java.util.List;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import com.vdurmont.emoji.EmojiParser;
@@ -29,8 +28,6 @@ public class Utils {
         try {
             System.out.println("page_url: " + page_url);
 
-            //Document doc = Jsoup.connect(page_url).get();
-
             File page_file = new File((in_html_file));
             Document doc = Jsoup.parse(page_file, "UTF-8", page_url);
 
@@ -43,11 +40,8 @@ public class Utils {
                 out_html_file = curr_dir + File.separatorChar + clean_title + ".html";
             }
 
-            String fileNameWithOutExt = FilenameUtils.removeExtension(page_file.getName());
-            String rel_path = fileNameWithOutExt + "_files/";
-
             // css style files
-            Elements css_styles = doc.select("link[href^=" + rel_path + "][type=\"text/css\"]");
+            Elements css_styles = doc.select("link[rel=\"stylesheet\"][type=\"text/css\"]");
 
             System.out.println("\ncss files: ");
 
@@ -69,7 +63,7 @@ public class Utils {
             }
 
             // javascript files
-            Elements js_files = doc.select("script[src^=" + rel_path + "]");
+            Elements js_files = doc.select("script");
 
             System.out.println("\njavascript files: ");
 
@@ -92,11 +86,10 @@ public class Utils {
             }
 
             // images
-            Elements img_files = doc.select("img[src^=" + rel_path + "]");
+            Elements img_files = doc.select("img");
 
             System.out.println("\nimg files: ");
 
-            Tika tika = new Tika();
             for (Element img : img_files) {
                 String img_file = img.attr("src");
                 System.out.println(img_file);
