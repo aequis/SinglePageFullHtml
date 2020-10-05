@@ -71,17 +71,6 @@ public class Utils {
                 String js_file = js.attr("src");
                 System.out.println(js_file);
 
-                Element elem = new Element(Tag.valueOf("script"), "");
-                elem.attr("type", "text/javascript");
-
-                String js_str = readFileToString(curr_dir + File.separatorChar + js_file);
-                System.out.println("js_str.length() = " + js_str.length());
-
-                elem.append(js_str);
-
-                Element parent = js.parent();
-                parent.appendChild(elem);
-
                 js.remove();
             }
 
