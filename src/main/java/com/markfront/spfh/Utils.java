@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import com.vdurmont.emoji.EmojiParser;
+
 public class Utils {
     public static boolean mergeIntoFatHtml(String page_url,
                                            String in_html_file,
@@ -34,6 +36,12 @@ public class Utils {
 
             String title = doc.title();
             System.out.println("title: " + title);
+
+            String clean_title = EmojiParser.removeAllEmojis(title);
+            clean_title = clean_title.replaceAll("[\\\\/:*?\"<>|]", "");
+            if (clean_title.length() > 0) {
+                out_html_file = curr_dir + File.separatorChar + clean_title + ".html";
+            }
 
             String fileNameWithOutExt = FilenameUtils.removeExtension(page_file.getName());
             String rel_path = fileNameWithOutExt + "_files/";
@@ -114,6 +122,7 @@ public class Utils {
             System.out.println("img files: " + img_files.size());
 
             writeStringToFile(doc.outerHtml(), out_html_file);
+            System.out.println("\nresult fat html saved to: " + out_html_file);
 
             success = true;
         } catch (Exception e) {
