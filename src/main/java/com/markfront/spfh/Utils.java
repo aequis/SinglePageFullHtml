@@ -192,32 +192,23 @@ public class Utils {
     public static boolean execSystemCommand(String[] cmd_with_args) {
         boolean success = false;
         try {
+            System.out.println("building command");
             ProcessBuilder builder = new ProcessBuilder();
             builder.command(cmd_with_args);
             builder.directory(new File(System.getProperty("user.home")));
 
-            Process process = builder.start();
-            StreamGobbler streamGobbler =
-                    new StreamGobbler(process.getInputStream());
-            Executors.newSingleThreadExecutor().submit(streamGobbler);
-            success = process.waitFor(60, TimeUnit.SECONDS);
+            System.out.println("starting process");
+            Process process = builder.inheritIO().start();
+
+            System.out.println("waiting");
+            int status_code = process.waitFor();
+            if (status_code == 0) {
+                success = true;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.println("returning");
         return success;
-    }
-
-    private static class StreamGobbler implements Runnable {
-        private final InputStream inputStream;
-
-        public StreamGobbler(InputStream inputStream) {
-            this.inputStream = inputStream;
-        }
-
-        @Override
-        public void run() {
-            new BufferedReader(new InputStreamReader(inputStream)).lines()
-                    .forEach(System.out::println);
-        }
     }
 }
