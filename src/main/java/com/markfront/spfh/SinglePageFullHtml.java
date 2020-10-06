@@ -85,7 +85,7 @@ public class SinglePageFullHtml {
                 "--no-host-directories",
                 "--no-directories",
                 "--timestamping",
-                "--quiet",
+                "--continue",
                 "\"" + page_url + "\""
             };
             System.out.println(Arrays.toString(wget_cmd));
