@@ -22,7 +22,7 @@ import com.vdurmont.emoji.EmojiParser;
 public class Utils {
     public static boolean mergeIntoFatHtml(String page_url,
                                            String in_html_file,
-                                           String out_html_file,
+                                           String out_filename,
                                            String curr_dir) {
         boolean success = false;
         try {
@@ -34,10 +34,13 @@ public class Utils {
             String title = doc.title();
             System.out.println("title: " + title);
 
+            String out_html_file;
             String clean_title = EmojiParser.removeAllEmojis(title);
             clean_title = clean_title.replaceAll("[\\\\/:*?\"<>|]", "");
             if (clean_title.length() > 0) {
-                out_html_file = curr_dir + File.separatorChar + clean_title + ".html";
+                out_html_file = curr_dir + File.separatorChar + out_filename + "." + clean_title + ".html";
+            } else {
+                out_html_file = curr_dir + File.separatorChar + out_filename + ".html";
             }
 
             // css style files

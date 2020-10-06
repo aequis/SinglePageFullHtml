@@ -51,7 +51,7 @@ public class SinglePageFullHtml {
         System.out.println("py_script: " + py_script);
 
         String in_file = curr_dir + File.separatorChar + "index.html";
-        String out_file = curr_dir + File.separatorChar + "F" + "index.html";
+        String out_file = curr_dir + File.separatorChar + file_stem + ".html";
 
         File fin = new File(in_file);
 
@@ -105,7 +105,7 @@ public class SinglePageFullHtml {
 
             System.out.println("before merge file size: " + bytes1);
 
-            Utils.mergeIntoFatHtml(page_url, in_file, out_file, curr_dir);
+            Utils.mergeIntoFatHtml(page_url, in_file, file_stem, curr_dir);
 
             long bytes2 = fout.length();
 
