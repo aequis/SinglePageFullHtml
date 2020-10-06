@@ -85,6 +85,8 @@ public class SinglePageFullHtml {
                 "--no-host-directories",
                 "--no-directories",
                 "--timestamping",
+                "--no-use-server-timestamps",
+                "--timeout=3",
                 "--default-page=" + file_stem + ".html",
                 "\"" + page_url + "\""
             };
