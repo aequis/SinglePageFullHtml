@@ -37,11 +37,7 @@ public class Utils {
             String out_html_file;
             String clean_title = EmojiParser.removeAllEmojis(title);
             clean_title = clean_title.replaceAll("[\\\\/:*?\"<>|]", "");
-            if (clean_title.length() > 0) {
-                out_html_file = curr_dir + File.separatorChar + out_filename + "." + clean_title + ".html";
-            } else {
-                out_html_file = curr_dir + File.separatorChar + out_filename + ".html";
-            }
+            out_html_file = curr_dir + File.separatorChar + "F-" + out_filename + "." + clean_title + ".html";
 
             // css style files
             Elements css_styles = doc.select("link[rel=\"stylesheet\"][type=\"text/css\"]");

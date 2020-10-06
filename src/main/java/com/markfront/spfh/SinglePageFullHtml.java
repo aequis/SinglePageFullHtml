@@ -50,8 +50,8 @@ public class SinglePageFullHtml {
 
         System.out.println("py_script: " + py_script);
 
-        String in_file = curr_dir + File.separatorChar + "index.html";
-        String out_file = curr_dir + File.separatorChar + file_stem + ".html";
+        String in_file = curr_dir + File.separatorChar + file_stem + ".html";
+        String out_file = curr_dir + File.separatorChar + "F-" + file_stem + ".html";
 
         File fin = new File(in_file);
 
@@ -85,7 +85,7 @@ public class SinglePageFullHtml {
                 "--no-host-directories",
                 "--no-directories",
                 "--timestamping",
-                "--continue",
+                "--default-page=" + file_stem + ".html",
                 "\"" + page_url + "\""
             };
             System.out.println(Arrays.toString(wget_cmd));
